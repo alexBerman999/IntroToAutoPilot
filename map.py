@@ -2,14 +2,14 @@ from random import randint
 
 class Map:
 
-    def __init__(self, width, height):
+    def __init__(self, width, height, obsts, wps):
         self.X_RANGE = (0, width)
         self.Y_RANGE = (0, height)
         self.SIZE_RANGE = (9, 92)
         self.obstacles = []
         self.waypoints = []
-        self.generateObstacles(4)
-        self.generateWaypoints(2)
+        self.generateObstacles(obsts)
+        self.generateWaypoints(wps)
 
     def generateObstacles(self, amt):
         for i in range(amt):
