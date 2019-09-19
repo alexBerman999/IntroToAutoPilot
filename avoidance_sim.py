@@ -6,7 +6,7 @@ from pathfind import pathfind
 pygame.init()
 screen = pygame.display.set_mode([600, 600])
 
-map = Map(600, 600, 4, 2)
+map = Map(600, 600, 10, 2)
 path = pathfind(map)
 
 running = True
