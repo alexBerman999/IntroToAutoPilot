@@ -57,11 +57,16 @@ def lineintersects(shape,w):
                         a += [(shape[(j+1) % len(shape)][0],shape[(j+1) % len(shape)][1])]
                 
                 else:
-                
-                    m = (shape[j][1]- shape[(j+1) % len(shape)][1])/(shape[j][0]-shape[(j+1) % len(shape)][0]);
-       
-                    x = (i - shape[j][1] + m*shape[j][0])/m;
-                    if( x > min(shape[j][0],shape[(j+1) % len(shape)][0]) and x < max(shape[j][0],shape[(j+1) % len(shape)][0])):
+                    x = None
+                    if shape[j][0] == shape[(j+1) % len(shape)][0]:
+                        x = shape[j][0]
+                    else:
+                        m = (shape[j][1]- shape[(j+1) % len(shape)][1])/(shape[j][0]-shape[(j+1) % len(shape)][0]);   
+                        x = (i - shape[j][1] + m*shape[j][0])/m;
+                    if( x >= min(shape[j][0],shape[(j+1) % len(shape)][0]) \
+                    and x <= max(shape[j][0],shape[(j+1) % len(shape)][0]) \
+                    and i >= min(shape[j][1],shape[(j+1) % len(shape)][1]) \
+                    and i <= max(shape[j][1],shape[(j+1) % len(shape)][1])):
                        a += [(x,i)];
   
         
@@ -69,8 +74,8 @@ def lineintersects(shape,w):
     a = pointSort(a)
     return a;
            
-shape = [(0, 0), (5, 8), (10, 0)]
-w = 2
+shape = [(0, 0), (0, 100), (300, 160), (300, 0)]
+w = 20
 
 points = lineintersects(shape, w)
 i = 0
