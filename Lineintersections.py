@@ -1,4 +1,38 @@
 import math
+
+def sortByX(points, reverse):
+	for i in range(len(points) - 1):
+		for j in range(1, len(points)):
+			if reverse:
+				if points[i][0] < points[j][0]:
+					temp = points[i]
+					points[i] = points[j]
+					points[j] = temp
+			else:
+				if points[i][0] > points[j][0]:
+					temp = points[i]
+					points[i] = points[j]
+					points[j] = temp
+	return points
+
+def pointSort(points):
+	sortedArr = []
+	y = None
+	rev = False
+	arrToSort = []
+	for p in points:
+		if y == None:
+			y = p[1]
+		if y == p[1]:
+			arrToSort += [p]
+		else:
+			sortedArr += sortByX(arrToSort, rev)
+			rev = not rev
+			arrToSort = [p]
+			y = p[1]
+	sortedArr += sortByX(arrToSort, rev)
+	return sortedArr
+
 def lineintersects(shape,w):
     a = []
     maxI = 0;
@@ -32,7 +66,7 @@ def lineintersects(shape,w):
   
         
 
-
+    a = pointSort(a)
     return a;
            
 shape = [(0, 0), (5, 8), (10, 0)]
