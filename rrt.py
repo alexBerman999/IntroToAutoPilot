@@ -3,13 +3,14 @@ class rrtNode:
 		self.x = x
 		self.y = y
 		self.parent = parent
+		self.children = []
 
 DELTA = 20
 
 def rrt(startX, startY, destX, destY):
 
 #Determine if the child is in a valid location
-def valid(nodeChild):
+def valid(nodeChild, obsts):
 
 #Find the nearest node to the child node
 def nearestPoint(nodeRoot, nodeChild):
