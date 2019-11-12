@@ -19,8 +19,10 @@ def checkObstacles(x1, y1, x2, y2, obsts):
 	return obstaclesArray	
 
 
-testarray = [(0,20,11.181), (1,2,20), (900,900,1)]
+testarray = [(0,20,11.181), (1,2,20), (900,900,1)] #osbt[0][0] #obst[1][0]
 print(checkObstacles(0,0,10,20,testarray))
+
+print(distance(1,5,2,5,10,20))
 
 # checkObstacles(25,18,56,99)
 
