@@ -1,3 +1,5 @@
+import math
+from random import randint
 from math import sqrt
 
 def distance(x1, y1, x2, y2, x3, y3):
@@ -22,8 +24,6 @@ def checkObstacles(x1, y1, x2, y2, obsts):
 testarray = [(0,20,11.181), (1,2,20), (900,900,1)]
 #print(checkObstacles(0,0,10,20,testarray))
 
-
-
 class rrtNode:
 	
 	def __init__(self, x, y, parent):
@@ -33,8 +33,22 @@ class rrtNode:
 		self.children = []
 
 DELTA = 20
+MAX_X = 10000
+MIN_X = -10000
+MAX_Y = 10000
+MIN_Y = -10000
 
-# def rrt(startX, startY, destX, destY):
+def rrt(startX, startY, destX, destY):
+	root = rrtNode(startX, startY, None)
+	
+
+def generateNode(root):
+	node = None
+	while node == None or not valid(node):
+		node = rrtNode(randint(MIN_X, MAX_X), randint(MIN_Y, MAX_Y), None)
+		steer(root, node)
+	node.parent.children += [node]
+	return node
 
 #Determine if the child is in a valid location
 def valid(nodeParent, nodeChild, obsts):
@@ -45,16 +59,6 @@ def valid(nodeParent, nodeChild, obsts):
 		return False
 	# if nodeChild.x == obsts.x and nodeChild.y == obsts.y:
 	# 	print("Warning Zone")
-
-#Find the nearest node to the child node
-# def nearestPoint(nodeRoot, nodeChild):
-
-#Take the nearest node and move the child to within the distance DELTA of it
-# def steer(nodeChild):
-#def rrt(startX, startY, destX, destY):
-
-#Determine if the child is in a valid location
-#def valid(nodeChild, obsts):
 
 #Find the nearest node to the child node
 def nearestPoint(nodeRoot, nodeChild):
@@ -83,8 +87,16 @@ def getPathtoPoint(node):
         
    
 
-#Take the nearest node and move the child to within the distance DELTA of it
-#def steer(nodeChild):
+
+#Take the nearest node and move the child to within the distance DELTA of the nearest node
+def steer(nodeRoot, nodeChild):
+	nearest = nearestPoint(nodeRoot, nodeChild)
+	direction = math.atan2(nodeChild.y - nearest.y, nodeChild.x - nearest.x)
+	nodeChild.x = DELTA * math.cos(direction)
+	nodeChild.y = DELTA * math.sin(direction)
+	#CHECK FOR VALIDITY
+	#THEN INSERT
+
 root = rrtNode(3,3,None)
 Node2 = rrtNode(2,2,root)
 Node3 = rrtNode(1,1,Node2)
@@ -97,6 +109,4 @@ Node2.children = [Node3]
 Nodetarget = rrtNode(5,0,None)
 #print(nearestPoint(root,Nodetarget).x)
 print(getPathtoPoint(Node5))
-
-
 
