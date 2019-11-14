@@ -20,7 +20,7 @@ def checkObstacles(x1, y1, x2, y2, obsts):
 
 
 testarray = [(0,20,11.181), (1,2,20), (900,900,1)]
-print(checkObstacles(0,0,10,20,testarray))
+#print(checkObstacles(0,0,10,20,testarray))
 
 
 
@@ -64,16 +64,24 @@ def nearestPoint(nodeRoot, nodeChild):
         mind = ((nodeRoot.x-nodeChild.x)**2 + (nodeRoot.y-nodeChild.y)**2)**.5;
         for child in nodeRoot.children:
                 nearestchild = nearestPoint(child,nodeChild)
-                print("Parent: (" + str(nodeRoot.x) + ", " + str(nodeRoot.y) + ")")
-                print("Nearest Child: (" + str(nearestchild.x) + ", " + str(nearestchild.y) + ")")
+                #print("Parent: (" + str(nodeRoot.x) + ", " + str(nodeRoot.y) + ")")
+                #print("Nearest Child: (" + str(nearestchild.x) + ", " + str(nearestchild.y) + ")")
                 d = ((nearestchild.x-nodeChild.x)**2 + (nearestchild.y-nodeChild.y)**2)**.5
-                print("Previous Min: " + str(mind) + "\tCurrent: " + str(d)) 
+                #print("Previous Min: " + str(mind) + "\tCurrent: " + str(d)) 
                 if(d < mind):
                         mind = d
                         minnode = nearestchild
         return minnode
+def getPathtoPoint(node):
+        a = []
+        b = node
+        while(b != None):
+                a += [(b.x,b.y)]
+                b = b.parent
+        a = a[::-1]
+        return a
         
-        
+   
 
 #Take the nearest node and move the child to within the distance DELTA of it
 #def steer(nodeChild):
@@ -87,7 +95,8 @@ root.children = [Node2,Node4]
 Node4.children = [Node5,Node6]
 Node2.children = [Node3]
 Nodetarget = rrtNode(5,0,None)
-print(nearestPoint(root,Nodetarget).x)
+#print(nearestPoint(root,Nodetarget).x)
+print(getPathtoPoint(Node5))
 
 
 
