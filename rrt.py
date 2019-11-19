@@ -43,6 +43,7 @@ def rrt(startX, startY, destX, destY, obsts):
 	curNode = generateNode(root)
 	while(checkObstacles(curNode.x, curNode.y, destX, destY, obsts):
 		curNode = generateNode(root)
+	return getPathToNode(curNode)
 	
 
 def generateNode(root, destX, destY):
