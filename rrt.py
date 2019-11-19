@@ -38,15 +38,18 @@ MIN_X = -10000
 MAX_Y = 10000
 MIN_Y = -10000
 
-def rrt(startX, startY, destX, destY):
+def rrt(startX, startY, destX, destY, obsts):
 	root = rrtNode(startX, startY, None)
+	curNode = generateNode(root)
+	while(checkObstacles(curNode.x, curNode.y, destX, destY, obsts):
+		curNode = generateNode(root)
 	
 
-def generateNode(root):
+def generateNode(root, destX, destY):
 	node = None
 	while node == None or not valid(node):
 		node = rrtNode(randint(MIN_X, MAX_X), randint(MIN_Y, MAX_Y), None)
-		steer(root, node)
+		steer(root, node, destX, destY)
 	node.parent.children += [node]
 	return node
 
@@ -81,9 +84,10 @@ def nearestPoint(nodeRoot, nodeChild):
 
 
 #Take the nearest node and move the child to within the distance DELTA of the nearest node
-def steer(nodeRoot, nodeChild):
+def steer(nodeRoot, nodeChild, destX, destY):
 	nearest = nearestPoint(nodeRoot, nodeChild)
 	direction = math.atan2(nodeChild.y - nearest.y, nodeChild.x - nearest.x)
+	if 
 	nodeChild.x = DELTA * math.cos(direction)
 	nodeChild.y = DELTA * math.sin(direction)
 	#CHECK FOR VALIDITY
