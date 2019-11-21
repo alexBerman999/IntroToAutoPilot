@@ -100,6 +100,15 @@ def steer(nodeRoot, nodeChild, destX, destY, obsts):
 		nearest.children += [nodeChild]
 		nodeChild.parent = nearest
 
+def optimization(listNode, obsts):
+	optimizedArray = [listNode[0]]
+	for l in range(1, len(listNode)):
+		j = 0
+		if len(checkObstacles(listNode[j][0], listNode[j][1], listNode[l][0], listNode[l][1], obsts)) != 0:
+			optimizedArray.append(listNode[l-1])
+			j = l
+			l += 1
+
 def rrt(startX, startY, destX, destY, obsts):
 	root = rrtNode(startX, startY, None)
 	end = rrtNode(destX, destY, None)
@@ -108,7 +117,9 @@ def rrt(startX, startY, destX, destY, obsts):
 		curNode = generateNode(root, destX, destY, obsts)
 	end.parent = curNode
 	curNode.children += [end]
-	return getPathtoPoint(end)
+	return optimization(getPathtoPoint(end), obsts)
+
+
 
 root = rrtNode(3,3,None)
 Node2 = rrtNode(2,2,root)
