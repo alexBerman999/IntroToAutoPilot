@@ -1,4 +1,5 @@
-from math import sqrt
+import math
+from random import randint
 
 def distance(x1, y1, x2, y2, x3, y3):
 	a = y1 - y2
@@ -143,8 +144,10 @@ def rrt(startX, startY, destX, destY, obsts):
 	curNode.children += [end]
 	return optimization(getPathtoPoint(end), obsts)
 
-
-
+def cost(node):
+	if node.parent == None:
+		return 0
+	return ((node.x - node.parent.x)**2 + (node.y - node.parent.y)**2)**.5 + cost(node.parent)
 
 root = rrtNode(3,3,None)
 Node2 = rrtNode(2,2,root)
@@ -163,7 +166,7 @@ for i in nodeswithindistance(5,0,0,root):
         print(i)
 
 
-
+print(cost(Node5))
 
 testObsts = [(-1.25, 1.25, 1), (0, 1.25, 1), (1.25, 1.25, 1), (-1.25, 0, 1), (-1.25, -1.25, 1), (1.25, 0, 1), (1.25, -1.25, 1)]
 #testObsts = [(3, 3, 1)]
