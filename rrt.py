@@ -133,6 +133,8 @@ def optimization(listNode, obsts):
 			optimizedArray.append(listNode[l-1])
 			j = l
 			l += 1
+	optimizedArray.append(listNode[len(listNode)-1])
+	return optimizedArray
 
 def rrt(startX, startY, destX, destY, obsts):
 	root = rrtNode(startX, startY, None)
@@ -172,3 +174,4 @@ testObsts = [(-1.25, 1.25, 1), (0, 1.25, 1), (1.25, 1.25, 1), (-1.25, 0, 1), (-1
 #testObsts = [(3, 3, 1)]
 
 print(rrt(0, 0, 5, 5, testObsts))
+
