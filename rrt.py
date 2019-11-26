@@ -1,4 +1,5 @@
 from math import sqrt
+import random
 
 def distance(x1, y1, x2, y2, x3, y3):
 	a = y1 - y2
@@ -102,6 +103,7 @@ def getPathtoPoint(node):
                 b = b.parent
         a = a[::-1]
         return a
+
 def nodeswithindistance(r,x,y,root):
         a = []
         
@@ -135,6 +137,14 @@ def optimization(listNode, obsts):
 	optimizedArray.append(listNode[len(listNode)-1])
 	return optimizedArray
 
+# def newPath(listNode):
+# 	newListNode = [listNode[0]]
+# 	l = 2
+# 	for l in listNode:
+# 		nodeswithindistance(5,l[0],l[1])
+
+
+
 def rrt(startX, startY, destX, destY, obsts):
 	root = rrtNode(startX, startY, None)
 	end = rrtNode(destX, destY, None)
@@ -144,6 +154,7 @@ def rrt(startX, startY, destX, destY, obsts):
 	end.parent = curNode
 	curNode.children += [end]
 	return optimization(getPathtoPoint(end), obsts)
+
 
 
 
@@ -162,7 +173,7 @@ Nodetarget = rrtNode(5,0,None)
 #print(nearestPoint(root,Nodetarget).x)
 #print(getPathtoPoint(Node5))
 for i in nodeswithindistance(5,0,0,root):
-        print(i)
+       print(i)
 
 
 
@@ -170,5 +181,5 @@ for i in nodeswithindistance(5,0,0,root):
 testObsts = [(-1.25, 1.25, 1), (0, 1.25, 1), (1.25, 1.25, 1), (-1.25, 0, 1), (-1.25, -1.25, 1), (1.25, 0, 1), (1.25, -1.25, 1)]
 #testObsts = [(3, 3, 1)]
 
-print(rrt(0, 0, 5, 5, testObsts))
+# print(rrt(0, 0, 5, 5, testObsts))
 
