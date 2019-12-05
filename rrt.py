@@ -1,6 +1,8 @@
+
 import math
 import time
 from random import randint
+
 
 def distance(x1, y1, x2, y2, x3, y3):
 	a = y1 - y2
@@ -104,6 +106,7 @@ def getPathtoPoint(node):
                 b = b.parent
         a = a[::-1]
         return a
+
 def nodeswithindistance(r,x,y,root):
         a = []
         
@@ -138,6 +141,14 @@ def optimization(listNode, obsts):
 	optimizedArray.append(listNode[len(listNode)-1])
 	return optimizedArray
 
+# def newPath(listNode):
+# 	newListNode = [listNode[0]]
+# 	l = 2
+# 	for l in listNode:
+# 		nodeswithindistance(5,l[0],l[1])
+
+
+
 def rrt(startX, startY, destX, destY, obsts):
 	startTime = time.time()
 	root = rrtNode(startX, startY, None)
@@ -163,6 +174,43 @@ def cost(node):
 		return 0
 	return ((node.x - node.parent.x)**2 + (node.y - node.parent.y)**2)**.5 + cost(node.parent)
 
+
+def costComparison(nodeParent, newNode):
+	x = 0
+	y = 1
+	betterCost = []
+	for nodes in nodeswithindistance(nodeParent):
+		if cost(nodeswithindistance(nodeParent)[x]) > cost(nodeswithindistance(nodeParent)[y]):
+			betterCost.append(nodeswithindistance(nodeParent)[y])
+			y +=1
+		else:
+			betterCost.append(nodeswithindistance(nodeParent)[x])
+			x = y
+			y +=1
+
+	return betterCost[len(betterCost)-1]
+
+
+def costComparison2(nodeParent, newNode):
+	a = nodeswithindistance(nodeParent)
+	originalParent = []
+	newParent = []
+	bestNode = []
+	t = 0
+	for z in a:
+		oldCost = cost(a[z])
+		oldParent = a[z].parent
+		a[z].parent = newNode
+		newCost = cost(a[z])
+		if oldCost < newCost:
+			a[z].parent = oldParent
+		else:
+			newNode.children.append(a[z])
+			oldParent.children.remove(a[z])
+
+
+
+
 root = rrtNode(3,3,None)
 Node2 = rrtNode(2,2,root)
 Node3 = rrtNode(1,1,Node2)
@@ -177,7 +225,7 @@ Nodetarget = rrtNode(5,0,None)
 #print(nearestPoint(root,Nodetarget).x)
 #print(getPathtoPoint(Node5))
 for i in nodeswithindistance(5,0,0,root):
-        print(i)
+       print(i)
 
 
 print(cost(Node5))
