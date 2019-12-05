@@ -1,5 +1,7 @@
-from math import sqrt
-import random
+
+import math
+from random import randint
+
 
 def distance(x1, y1, x2, y2, x3, y3):
 	a = y1 - y2
@@ -155,6 +157,44 @@ def rrt(startX, startY, destX, destY, obsts):
 	curNode.children += [end]
 	return optimization(getPathtoPoint(end), obsts)
 
+def cost(node):
+	if node.parent == None:
+		return 0
+	return ((node.x - node.parent.x)**2 + (node.y - node.parent.y)**2)**.5 + cost(node.parent)
+
+
+def costComparison(nodeParent, newNode):
+	x = 0
+	y = 1
+	betterCost = []
+	for nodes in nodeswithindistance(nodeParent):
+		if cost(nodeswithindistance(nodeParent)[x]) > cost(nodeswithindistance(nodeParent)[y]):
+			betterCost.append(nodeswithindistance(nodeParent)[y])
+			y +=1
+		else:
+			betterCost.append(nodeswithindistance(nodeParent)[x])
+			x = y
+			y +=1
+
+	return betterCost[len(betterCost)-1]
+
+
+def costComparison2(nodeParent, newNode):
+	a = nodeswithindistance(nodeParent)
+	originalParent = []
+	newParent = []
+	bestNode = []
+	t = 0
+	for z in a:
+		oldCost = cost(a[z])
+		oldParent = a[z].parent
+		a[z].parent = newNode
+		newCost = cost(a[z])
+		if oldCost < newCost:
+			a[z].parent = oldParent
+		else:
+			newNode.children.append(a[z])
+			oldParent.children.remove(a[z])
 
 
 
@@ -176,7 +216,7 @@ for i in nodeswithindistance(5,0,0,root):
        print(i)
 
 
-
+print(cost(Node5))
 
 testObsts = [(-1.25, 1.25, 1), (0, 1.25, 1), (1.25, 1.25, 1), (-1.25, 0, 1), (-1.25, -1.25, 1), (1.25, 0, 1), (1.25, -1.25, 1)]
 #testObsts = [(3, 3, 1)]
