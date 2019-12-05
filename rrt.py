@@ -1,4 +1,5 @@
 import math
+import time
 from random import randint
 
 def distance(x1, y1, x2, y2, x3, y3):
@@ -43,23 +44,23 @@ class rrtNode:
                 return str(self.x)+ "," + str(self.y)
 
 
-DELTA = 20
+DELTA = 5
 
 # def rrt(startX, startY, destX, destY):
 
-MAX_X = 10000
-MIN_X = -10000
-MAX_Y = 10000
-MIN_Y = -10000
+MAX_X = 1000
+MIN_X = -1000
+MAX_Y = 1000
+MIN_Y = -1000
 	
 
 def generateNode(root, destX, destY, obsts):
 	node = None
 	while node == None or not valid(root, node, obsts):
-		node = rrtNode(randint(MIN_X, MAX_X), randint(MIN_Y, MAX_Y), None)
+		node = rrtNode(destX, destY, None)
+		if randint(0, 10) < 7:
+			node = rrtNode(randint(MIN_X, MAX_X), randint(MIN_Y, MAX_Y), None)
 		steer(root, node, destX, destY, obsts)
-	node.parent.children += [node]
-	
 	return node
 
 
@@ -119,8 +120,9 @@ def steer(nodeRoot, nodeChild, destX, destY, obsts):
 	nearest = nearestPoint(nodeRoot, nodeChild)
 	direction = math.atan2(nodeChild.y - nearest.y, nodeChild.x - nearest.x)
 	if ((nodeChild.x - nearest.x)**2 + (nodeChild.y - nearest.y)**2)**0.5 > DELTA:
-		nodeChild.x = DELTA * math.cos(direction)
-		nodeChild.y = DELTA * math.sin(direction)
+
+		nodeChild.x = nearest.x + (DELTA * math.cos(direction))
+		nodeChild.y = nearest.y + (DELTA * math.sin(direction))
 	if valid(nodeRoot, nodeChild, obsts):
 		nearest.children += [nodeChild]
 		nodeChild.parent = nearest
@@ -137,6 +139,7 @@ def optimization(listNode, obsts):
 	return optimizedArray
 
 def rrt(startX, startY, destX, destY, obsts):
+	startTime = time.time()
 	root = rrtNode(startX, startY, None)
 	end = rrtNode(destX, destY, None)
 	curNode = generateNode(root, destX, destY, obsts)
@@ -144,7 +147,16 @@ def rrt(startX, startY, destX, destY, obsts):
 		curNode = generateNode(root, destX, destY, obsts)
 	end.parent = curNode
 	curNode.children += [end]
+	print("Search time: " + str(time.time() - startTime) + " seconds")
+	print("Nodes generated: " + str(sizeOfTree(root)))
+	print("Total path length: " + str(cost(end)))
 	return optimization(getPathtoPoint(end), obsts)
+
+def sizeOfTree(root):
+	amount = 1
+	for child in root.children:
+		amount += sizeOfTree(child)
+	return amount
 
 def cost(node):
 	if node.parent == None:
@@ -170,8 +182,11 @@ for i in nodeswithindistance(5,0,0,root):
 
 print(cost(Node5))
 
-testObsts = [(-1.25, 1.25, 1), (0, 1.25, 1), (1.25, 1.25, 1), (-1.25, 0, 1), (-1.25, -1.25, 1), (1.25, 0, 1), (1.25, -1.25, 1)]
-#testObsts = [(3, 3, 1)]
+testObsts = []#[(0, 1.25, 1), (1.25, 0, 1), (50, 50, 20), (100, 75, 25), (500, 200, 30)]
+for i in range(10, 100, 10):
+	for j in range(10, 100, 10):
+		x = j + (5 * ((i % 20)/10))
+		testObsts += [(x, i, 2.5)]
 
-print(rrt(0, 0, 5, 5, testObsts))
+print(rrt(0, 0, 120, 120, testObsts))
 
