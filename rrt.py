@@ -156,8 +156,13 @@ def rrt(startX, startY, destX, destY, obsts):
 	curNode = generateNode(root, destX, destY, obsts)
 	while(len(checkObstacles(curNode.x, curNode.y, destX, destY, obsts)) != 0):
 		curNode = generateNode(root, destX, destY, obsts)
+		costComparison(root, curNode)
 	end.parent = curNode
 	curNode.children += [end]
+	print("HERE")
+	for i in range(150):
+		curNode = generateNode(root, destX, destY, obsts)
+		costComparison(root, curNode)
 	print("Search time: " + str(time.time() - startTime) + " seconds")
 	print("Nodes generated: " + str(sizeOfTree(root)))
 	print("Total path length: " + str(cost(end)))
@@ -175,66 +180,64 @@ def cost(node):
 	return ((node.x - node.parent.x)**2 + (node.y - node.parent.y)**2)**.5 + cost(node.parent)
 
 
+#def costComparison(nodeParent, newNode):
+#	x = 0
+#	y = 1
+#	betterCost = []
+#	for nodes in nodeswithindistance(nodeParent):
+#		if cost(nodeswithindistance(nodeParent)[x]) > cost(nodeswithindistance(nodeParent)[y]):
+#			betterCost.append(nodeswithindistance(nodeParent)[y])
+#			y +=1
+#		else:
+#			betterCost.append(nodeswithindistance(nodeParent)[x])
+#			x = y
+#			y +=1
+#
+#	return betterCost[len(betterCost)-1]
+
+
 def costComparison(nodeParent, newNode):
-	x = 0
-	y = 1
-	betterCost = []
-	for nodes in nodeswithindistance(nodeParent):
-		if cost(nodeswithindistance(nodeParent)[x]) > cost(nodeswithindistance(nodeParent)[y]):
-			betterCost.append(nodeswithindistance(nodeParent)[y])
-			y +=1
-		else:
-			betterCost.append(nodeswithindistance(nodeParent)[x])
-			x = y
-			y +=1
-
-	return betterCost[len(betterCost)-1]
-
-
-def costComparison2(nodeParent, newNode):
-	a = nodeswithindistance(nodeParent)
+	a = nodeswithindistance(15, newNode.x, newNode.y, nodeParent)
 	originalParent = []
 	newParent = []
 	bestNode = []
 	t = 0
 	for z in a:
-		oldCost = cost(a[z])
-		oldParent = a[z].parent
-		a[z].parent = newNode
-		newCost = cost(a[z])
-		if oldCost < newCost:
-			a[z].parent = oldParent
-		else:
-			newNode.children.append(a[z])
-			oldParent.children.remove(a[z])
+		oldCost = cost(z)
+		distToZ = ((z.x - newNode.x) ** 2 + (z.y - newNode.y) ** 2) ** .5
+		newCost = cost(newNode) + distToZ
+		if oldCost > newCost:
+			z.parent.children.remove(z)
+			z.parent = newNode
+			newNode.children.append(z)
 
 
 
 
-root = rrtNode(3,3,None)
-Node2 = rrtNode(2,2,root)
-Node3 = rrtNode(1,1,Node2)
-Node4 = rrtNode(5,-1,root)
-Node5 = rrtNode(3,1,Node4)
-Node6 = rrtNode(5,1,Node4)
-root.children = [Node2,Node4]
-Node4.children = [Node5,Node6]
-Node2.children = [Node3]
-Nodetarget = rrtNode(5,0,None)
+#root = rrtNode(3,3,None)
+#Node2 = rrtNode(2,2,root)
+#Node3 = rrtNode(1,1,Node2)
+#Node4 = rrtNode(5,-1,root)
+#Node5 = rrtNode(3,1,Node4)
+#Node6 = rrtNode(5,1,Node4)
+#root.children = [Node2,Node4]
+#Node4.children = [Node5,Node6]
+#Node2.children = [Node3]
+#Nodetarget = rrtNode(5,0,None)
 
 #print(nearestPoint(root,Nodetarget).x)
 #print(getPathtoPoint(Node5))
-for i in nodeswithindistance(5,0,0,root):
-       print(i)
+#for i in nodeswithindistance(5,0,0,root):
+#       print(i)
 
 
-print(cost(Node5))
+#print(cost(Node5))
 
-testObsts = []#[(0, 1.25, 1), (1.25, 0, 1), (50, 50, 20), (100, 75, 25), (500, 200, 30)]
-for i in range(10, 100, 10):
-	for j in range(10, 100, 10):
-		x = j + (5 * ((i % 20)/10))
-		testObsts += [(x, i, 2.5)]
+testObsts = [(0, 1.25, 1), (1.25, 0, 1), (50, 50, 20), (100, 75, 25), (500, 200, 30)]
+#for i in range(10, 100, 10):
+#	for j in range(10, 100, 10):
+#		x = j + (5 * ((i % 20)/10))
+#		testObsts += [(x, i, 2.5)]
 
 print(rrt(0, 0, 120, 120, testObsts))
 
