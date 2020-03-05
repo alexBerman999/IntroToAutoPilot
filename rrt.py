@@ -154,13 +154,15 @@ def rrt(startX, startY, destX, destY, obsts):
 	root = rrtNode(startX, startY, None)
 	end = rrtNode(destX, destY, None)
 	curNode = generateNode(root, destX, destY, obsts)
+	print("Generating Nodes...")
 	while(len(checkObstacles(curNode.x, curNode.y, destX, destY, obsts)) != 0):
 		curNode = generateNode(root, destX, destY, obsts)
 		costComparison(root, curNode)
 	end.parent = curNode
 	curNode.children += [end]
-	print("HERE")
+	print("Path Found. Optimizing Path...")
 	for i in range(150):
+		print("Adding " + str(i) + "/150 waypoints...", end="\r")
 		curNode = generateNode(root, destX, destY, obsts)
 		costComparison(root, curNode)
 	print("Search time: " + str(time.time() - startTime) + " seconds")
@@ -213,37 +215,11 @@ def costComparison(nodeParent, newNode):
 
 
 
-
-#root = rrtNode(3,3,None)
-#Node2 = rrtNode(2,2,root)
-#Node3 = rrtNode(1,1,Node2)
-#Node4 = rrtNode(5,-1,root)
-#Node5 = rrtNode(3,1,Node4)
-#Node6 = rrtNode(5,1,Node4)
-#root.children = [Node2,Node4]
-#Node4.children = [Node5,Node6]
-#Node2.children = [Node3]
-#Nodetarget = rrtNode(5,0,None)
-
-#print(nearestPoint(root,Nodetarget).x)
-#print(getPathtoPoint(Node5))
-#for i in nodeswithindistance(5,0,0,root):
-#       print(i)
-
-
-#print(cost(Node5))
-
 testObsts = [(0, 1.25, 1), (1.25, 0, 1), (50, 50, 20), (100, 75, 25), (500, 200, 30)]
-#for i in range(10, 100, 10):
-#	for j in range(10, 100, 10):
-#		x = j + (5 * ((i % 20)/10))
-#		testObsts += [(x, i, 2.5)]
-
-print(rrt(0, 0, 120, 120, testObsts))
-
 
 a = open("linkwaypoints.txt","w")
 b = rrt(0, 0, 120, 120, testObsts)
+print(b)
 for j in range(len(b)):
         a.write(str(j) + "\t0\t0\t16\t0\t20\t0\t0\t" + str(b[j][0]) + "\t" + str(b[j][1]) + "\t400\t1\n")
 
