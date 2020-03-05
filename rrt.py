@@ -12,7 +12,6 @@ def distance(x1, y1, x2, y2, x3, y3):
 	distEqBot = (a**2 + b**2)**.5 #Distance Equation Bottom Fragment
 	distEq= distEqTop/distEqBot #Distance Equation
 	return(distEq)
-	#return(distEq)
 
 def checkObstacles(x1, y1, x2, y2, obsts):
 	obstaclesArray = []
@@ -29,14 +28,9 @@ def checkObstacles(x1, y1, x2, y2, obsts):
 		x += 0.01
 	return obstaclesArray	
 
-
 testarray = [(0,20,11.181), (1,2,20), (900,900,1)]
-#print(checkObstacles(0,0,10,20,testarray))
-
-
 
 class rrtNode:
-	
 	def __init__(self, x, y, parent):
 		self.x = x
 		self.y = y
@@ -216,10 +210,14 @@ def costComparison(nodeParent, newNode):
 
 
 testObsts = [(0, 1.25, 1), (1.25, 0, 1), (50, 50, 20), (100, 75, 25), (500, 200, 30)]
+wps = [(0, 0), (120, 120), (5, 5)]
 
-a = open("linkwaypoints.txt","w")
-b = rrt(0, 0, 120, 120, testObsts)
-a.write("QGC WPL 110\n")
-for j in range(len(b)):
-        a.write(str(j) + "\t0\t0\t16\t0\t20\t0\t0\t" + str(b[j][0]) + "\t" + str(b[j][1]) + "\t400\t1\n")
+outfile = open("linkwaypoints.txt","w")
+solution_path = []
+for i in range(len(wps) - 1):
+	solution_path += rrt(wps[i][0], wps[i][1], wps[i+1][0], wps[i+1][1], testObsts)[:-1]
+solution_path += [wps[-1]]
+outfile.write("QGC WPL 110\n")
+for i in range(len(solution_path)):
+        outfile.write(str(i) + "\t0\t0\t16\t0\t20\t0\t0\t" + str(solution_path[i][0]) + "\t" + str(solution_path[i][1]) + "\t400\t1\n")
 
