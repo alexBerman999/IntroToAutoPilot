@@ -244,6 +244,7 @@ print(rrt(0, 0, 120, 120, testObsts))
 
 a = open("linkwaypoints.txt","w")
 b = rrt(0, 0, 120, 120, testObsts)
+print("QGC WPL 110")
 for j in range(len(b)):
         a.write(str(j) + "\t0\t0\t16\t0\t20\t0\t0\t" + str(b[j][0]) + "\t" + str(b[j][1]) + "\t400\t1\n")
 
