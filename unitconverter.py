@@ -17,7 +17,7 @@ class Converter():
         self.origin = orig
 
     """
-        Converts degrees latitude to meters. This conversion finds the east/west
+        Converts degrees latitude to meters. This conversion finds the north/south
         distance in meters between the supplied point and origin.
     """
     def degreesLatToMeters(self, degrees):
@@ -26,7 +26,7 @@ class Converter():
 
     """
         Converts degrees longitude to meters. This conversion finds the
-        north/south distance in meters between the supplied point and origin.
+        east/west distance in meters between the supplied point and origin.
     """
     def degreesLongToMeters(self, degrees):
         latR = math.radians(self.origin[0])
