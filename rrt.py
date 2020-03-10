@@ -162,7 +162,7 @@ def rrt(startX, startY, destX, destY, obsts):
 	print("Search time: " + str(time.time() - startTime) + " seconds")
 	print("Nodes generated: " + str(sizeOfTree(root)))
 	print("Total path length: " + str(cost(end)))
-	return optimization(getPathtoPoint(end), obsts)
+	return getPathtoPoint(end)
 
 def sizeOfTree(root):
 	amount = 1
@@ -209,14 +209,17 @@ def costComparison(nodeParent, newNode):
 
 
 
-testObsts = [(0, 1.25, 1), (1.25, 0, 1), (50, 50, 20), (100, 75, 25), (500, 200, 30)]
-wps = [(0, 0), (120, 120), (5, 5)]
+testObsts = [(0, 60, 50)]
+wps = [(0, 0), (0 , 200)]
 
 outfile = open("linkwaypoints.txt","w")
 solution_path = []
 for i in range(len(wps) - 1):
-	solution_path += rrt(wps[i][0], wps[i][1], wps[i+1][0], wps[i+1][1], testObsts)[:-1]
+	points = rrt(wps[i][0], wps[i][1], wps[i+1][0], wps[i+1][1], testObsts)[0:-1]
+	print(points)
+	solution_path += points
 solution_path += [wps[-1]]
+print(solution_path)
 outfile.write("QGC WPL 110\n")
 for i in range(len(solution_path)):
         outfile.write(str(i) + "\t0\t0\t16\t0\t20\t0\t0\t" + str(solution_path[i][0]) + "\t" + str(solution_path[i][1]) + "\t400\t1\n")
